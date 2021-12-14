@@ -107,17 +107,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.querySelector('.modal');
     const modalCloseBtn = document.querySelector('[data-close]');
 
-    modalTrigger.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // 1 variant with add / remove classes
-            modal.classList.add('show');
-            modal.classList.remove('hide');
+    function openModal() {
+        // 1 variant with add / remove classes
+        modal.classList.add('show');
+        modal.classList.remove('hide');
 
-            // 2 variant with toggle
-            // modal.classList.toggle('show');
-            document.body.style.overflow = 'hidden';
-        })
-    })
+        // 2 variant with toggle
+        // modal.classList.toggle('show');
+        document.body.style.overflow = 'hidden';
+        clearInterval(modalTimerId);
+    }
+
+    modalTrigger.forEach(btn => {
+            btn.addEventListener('click', openModal)
+        }
+    )
 
     function closeModal() {
         // 1 variant with add / remove classes
@@ -142,5 +146,19 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
         }
     })
+
+    const modalTimerId = setTimeout(openModal, 5000);
+
+    function showModalByScroll() {
+        // pageYOffset - прокрученная часть
+        // document.documentElement.clientHeight - видимая часть кот.мы видим без прокрутки
+        if (window.pageYOffset + document.documentElement.clientHeight >=
+            document.documentElement.scrollHeight) {
+            openModal();
+            window.removeEventListener('scroll', showModalByScroll);
+        }
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
 
 })
