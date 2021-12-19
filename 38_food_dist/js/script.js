@@ -165,12 +165,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Classes
 
     class MenuCard {
-        constructor(src, alt, title, descr, price, parentSelector) {
+        constructor(src, alt, title, descr, price, parentSelector, ...classes) {
             this.src = src;
             this.alt = alt;
             this.title = title;
             this.descr = descr;
             this.price = price;
+            this.classes = classes;
             this.parent = document.querySelector(parentSelector);
             this.transfer = 27;
             this.changeToUAH();
@@ -182,8 +183,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         render() {
             const element = document.createElement('div');
+            if (this.classes.length === 0) {
+                this.element = 'menu__item';
+                element.classList.add(this.element);
+            } else {
+                this.classes.forEach(classname => element.classList.add(classname));
+            }
+
             element.innerHTML = `
-            <div class="menu__item">
                 <img src=${this.src} alt=${this.alt}>
                 <h3 class="menu__item-subtitle">${this.title}</h3>
                 <div class="menu__item-descr">${this.descr}</div>
@@ -192,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="menu__item-cost">Цена:</div>
                     <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
                 </div>
-            </div>
             `;
             this.parent.append(element);
         }
@@ -206,7 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт соптимальной " +
         "ценой и высоким качеством!",
         9,
-        ".menu .container"
+        ".menu .container",
     ).render();
 
     new MenuCard(
@@ -218,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "меню без похода в ресторан!" +
         "",
         14,
-        ".menu .container"
+        ".menu .container",
     ).render();
 
 
@@ -230,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
         " происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количествобелков за счет тофу" +
         " и импортных вегетарианских стейков.",
         21,
-        ".menu .container"
+        ".menu .container",
     ).render();
 
 
