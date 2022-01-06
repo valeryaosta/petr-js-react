@@ -1,0 +1,11 @@
+.my-slider {
+    margin: 0 auto;
+    margin-top: 20px;
+    display: block;
+
+}
+
+.my-slider img {
+    width: 500px;
+    height: 330px;
+}
