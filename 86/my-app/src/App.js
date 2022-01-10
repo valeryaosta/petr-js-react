@@ -1,43 +1,41 @@
 import React from "react";
 import './App.css';
 
-const Header = () => {
-    return <h2>Hello World!</h2>
-}
-const Field = () => {
-    const holder = 'Enter here'
-    const styledFill = {
-        width: '300px'
-    }
-    return <input placeholder={holder} type="text" style={styledFill}/>
-}
-
-class Field2 extends React.Component {
-    render() {
-        const holder = 'Enter here'
-        const styledFill = {
-            width: '300px'
+class WhoAmI extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            years: 27,
+            text: '+++'
         }
-        return <input placeholder={holder}
-                      type="text"
-                      style={styledFill}/>
     }
-}
 
-function Btn() {
-    const text = 'Log in'
-    const logged = true
-    return <button>{logged ? 'Enter' : text}</button>
+    nextYear = () => {
+
+        this.setState((state) => ({
+            years: state.years + 1
+        }))
+    }
+
+
+    render() {
+        const {name, surname, link} = this.props
+        return (
+            <div>
+                <button onClick={this.nextYear}>{this.state.text}</button>
+                <h1>My name is {name}, surname - {surname}, age - {this.state.years} </h1>
+                <a href={link}>My Profile</a>
+            </div>
+        )
+    }
 }
 
 
 function App() {
     return (
         <div className="App">
-            <Header/>
-            <Field/>
-            <Field2/>
-            <Btn/>
+            <WhoAmI name="John" surname="Smith" link="facebook.com"/>
+            <WhoAmI name="Alex" surname="Stonks" link="vk.com"/>
         </div>
     );
 }
