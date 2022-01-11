@@ -17,6 +17,8 @@ class WhoAmI extends React.Component {
             years: state.years + 1
         }))
     }
+
+    // лучше методы писать через стрелочные функции,чтоб не терять контекст и на байндить каждый раз
     commitInputChanges = (e, color) => {
         //узнать у объекта события на каком элементе произошло событие
         console.log(e.target.value)
