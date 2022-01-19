@@ -12,9 +12,9 @@ class App extends React.Component {
         super(props);
         this.state = {
             data: [
-                {name: 'John Smith', salary: '1000', increase: false, id: 1},
-                {name: 'Alex Rase', salary: '850', increase: true, id: 2},
-                {name: 'Ann Freeze', salary: '1100', increase: false, id: 3}
+                {name: 'John Smith', salary: '1000', increase: false, rise: true, id: 1},
+                {name: 'Alex Rase', salary: '850', increase: true, rise: false, id: 2},
+                {name: 'Ann Freeze', salary: '1100', increase: false, rise: false, id: 3}
             ]
         }
         this.maxId = 4;
@@ -34,6 +34,7 @@ class App extends React.Component {
             name,
             salary,
             increase: false,
+            rise: false,
             id: this.maxId++
         }
         this.setState(({data}) => {
@@ -44,10 +45,41 @@ class App extends React.Component {
         });
     }
 
+    onToggleProp = (id, prop) => {
+        // this.setState(({data}) => {
+        // // получаем индекс элемента с которым будем работать
+        // const index = data.findIndex(elem => elem.id === id)
+        // // берем объект по индексу и делаем его копию, чтобы что-то иметь возможность поменять
+        //
+        // const old = data[index]
+        // const newItem = {...old, increase: !old.increase}
+        // const newArr = [...data.slice(0, index), newItem, ...data.slice(index +1)]
+        //
+        // return {
+        //     data: newArr
+        // }
+        // })
+
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, [prop]: !item[prop]}
+                }
+                return item
+            })
+        }))
+    }
+
+
     render() {
+        // общее количество сотрудников в массиве
+        const employees = this.state.data.length
+        // кол-во сотрудников идущих на повышение
+        const increased = this.state.data.filter(item => item.increase).length
+
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo employees={employees} increased={increased}/>
 
                 <div className="search-panel">
                     <SearchPanel/>
@@ -56,6 +88,7 @@ class App extends React.Component {
 
                 <EmployeesList data={this.state.data}
                                onDelete={this.deleteItem}
+                               onToggleProp={this.onToggleProp}
                 />
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
