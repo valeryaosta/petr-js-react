@@ -3,12 +3,11 @@ import './employees-add-form.scss'
 
 class EmployeesAddForm extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
+    // св-ва,кот будут у экзампляра создаются сейчас без конструктора обычным синтаксисом.
+    // будто бы мы создавали обычную переменную (просто свойство класса)
+    state = {
             name: '',
             salary: '',
-        }
     }
 
     onValueChange = (e) => {
@@ -26,6 +25,10 @@ class EmployeesAddForm extends React.Component {
             salary: ''
         })
     }
+
+    static onLog = () => {
+        console.log('Hey')
+    // EmployeesAddForm.onLog(); на классе благодаря св-ву static  можно вызвать его метод!!!
 
     render() {
         const {name, salary} = this.props
