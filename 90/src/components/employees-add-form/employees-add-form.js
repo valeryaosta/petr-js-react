@@ -28,7 +28,8 @@ class EmployeesAddForm extends React.Component {
 
     static onLog = () => {
         console.log('Hey')
-    // EmployeesAddForm.onLog(); на классе благодаря св-ву static  можно вызвать его метод!!!
+        // EmployeesAddForm.onLog(); на классе благодаря св-ву static  можно вызвать его метод!!!
+    }
 
     render() {
         const {name, salary} = this.props
