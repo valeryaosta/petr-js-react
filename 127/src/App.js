@@ -1,4 +1,4 @@
-import {Component, useState} from 'react';
+import {Component, useEffect, useState} from 'react';
 import {Container} from 'react-bootstrap';
 import './App.css';
 /* class Slider extends Component {
@@ -23,7 +23,15 @@ import './App.css';
         }))
     }
 
-    render() {
+    componentDidMount() {
+        document.title = `Slide: ${this.state.slide}`
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        document.title = `Slide: ${this.state.slide}`
+    }
+
+     render() {
         return (
             <Container>
                 <div className="slider w-50 m-auto">
@@ -44,19 +52,33 @@ import './App.css';
             </Container>
         )
     }
-} */
-
-const calcValue = () => {
-    console.log('random')
-
-    return Math.random() * (50 - 1) + 1;
-}
-
+}*/
 
 const Slider = (props) => {
 
     const [slide, setSlide] = useState(0)
     const [autoplay, setAutoplay] = useState(false)
+
+    // const logging = () => {
+    //     console.log('log')
+    // }
+
+    useEffect(() => {
+        console.log('effect')
+        document.title = `Slide: ${slide}`
+
+        // window.addEventListener('click', logging)
+
+        // return () => {
+        //     window.removeEventListener('click', logging)
+        // }
+
+    }, [slide])
+
+    useEffect(() => {
+        console.log('autoplay')
+    }, [autoplay])
+
 
     const changeSlide = (i) => {
         // setSlide(slide + i)
@@ -116,10 +138,15 @@ const Slider = (props) => {
     )
 }
 
-
 function App() {
+
+    const [slider, setSlider] = useState(true)
+
     return (
-        <Slider/>
+        <>
+            <button onClick={() => setSlider(false)}>Click</button>
+            {slider ? <Slider/> : null}
+        </>
     );
 }
 
