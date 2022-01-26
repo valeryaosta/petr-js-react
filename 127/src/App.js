@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {Container} from 'react-bootstrap';
 import './App.css';
 /* class Slider extends Component {
@@ -54,6 +54,11 @@ import './App.css';
     }
 }*/
 
+const countTotal = (num) => {
+    console.log('counting...')
+    return num + 10
+}
+
 const Slider = (props) => {
 
     const [slide, setSlide] = useState(0)
@@ -71,37 +76,37 @@ const Slider = (props) => {
     useEffect(() => {
         // console.log('autoplay')
     }, [autoplay])
-    
+
     const changeSlide = (i) => {
         // setSlide(slide + i)
 
         // когда важно пред значение агрумента, slide напрямую изменять не можем
         setSlide(slide => slide + i)
     }
-
     const toggleAutoplay = () => {
         // setAutoplay(!autoplay)
         setAutoplay(autoplay => !autoplay)
     }
 
-    // елси передаем неск свойств сразу
-    // const [state, setState] = useState({slide: 0, autoplay: false})
-
-    // const changeSlide = (i) => {
-    //     setState(state => ({...state, slide: state.slide + i}))
-    // }
-
-    // const toggleAutoplay = () => {
-    //     setState(state => ({...state, autoplay: !state.autoplay}))
-    // }
-
     const getSomeImages = useCallback(() => {
         console.log('fetching')
         return [
-            'https://secretmag.ru/thumb/1200x0/filters:quality(75):no_upscale()/imgs/2021/11/02/12/4999384/d53776b3b010f6c92bdf3e0d7946b938aabd8c08.webp',
+            // 'https://secretmag.ru/thumb/1200x0/filters:quality(75):no_upscale()/imgs/2021/11/02/12/4999384/d53776b3b010f6c92bdf3e0d7946b938aabd8c08.webp',
             'https://klike.net/uploads/posts/2020-01/1578662816_1.jpg',
         ]
-    }, [])
+    }, [slide])
+
+    const total = useMemo(() => {
+        return countTotal(slide)
+    }, [slide])
+
+    const style = useMemo(() => ({
+        color: slide > 4 ? 'red' : 'black'
+    }), [slide])
+
+    useEffect(() => {
+        console.log('styles changed!')
+    }, [style])
 
     return (
         <Container>
@@ -109,11 +114,11 @@ const Slider = (props) => {
 
                 <Slide getSomeImages={getSomeImages}/>
 
-                {/*<div className="text-center mt-5">Active slide {state.slide}*/}
                 <div className="text-center mt-5">Active slide {slide}
                     <br/>
-                    {/*{state.autoplay ? 'auto' : null}*/}
                     {autoplay ? 'auto' : null}
+                </div>
+                <div className="text-center mt-5" style={style}>Total slides: {total}
                 </div>
                 <div className="buttons mt-3">
                     <button
