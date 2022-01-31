@@ -4,6 +4,7 @@ import MarvelService from "../../services/MarvelService";
 import Skeleton from "../skeleton/Skeleton";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
+// import PropTypes from 'prop-types';
 
 class CharInfo extends React.Component {
 
@@ -120,5 +121,9 @@ const View = ({char}) => {
         </>
     )
 }
+
+// CharInfo.propTypes = {
+//     charId: PropTypes.number,
+// }
 
 export default CharInfo;
