@@ -1,6 +1,7 @@
 import React from "react";
 import './App.css';
 import styled from "styled-components";
+import BootstrapTest from "./BootstrapTest";
 
 class WhoAmI extends React.Component {
     constructor(props) {
@@ -50,10 +51,36 @@ class WhoAmI extends React.Component {
     }
 }
 
+const DynamicGreeting = (props) => {
+    return (
+        <div className={'mb-3 p-3 border border-' + props.color}>
+            {/* {props.children} */}
+            {/* на их месте появятся все элементы или компоненты, еоторые мы передадим во внутрь DynamicGreeting */}
+            {
+               React.Children.map(props.children, child => {
+                   return React.cloneElement(child, {className: 'shadow p-3 m-3 border rounded'})
+               })
+            }
+        </div>
+    )
+}
 
 function App() {
     return (
         <Wrapper>
+            <BootstrapTest
+                left = {
+                    <DynamicGreeting color='primary'>
+                        <h2>This was real hard</h2>
+                        <h2>Hello world!</h2>
+                    </DynamicGreeting>
+                }
+                right = {
+                    <DynamicGreeting color='primary'>
+                        <h2>Right</h2>
+                    </DynamicGreeting>
+                }
+            />
             <WhoAmI name="John" surname="Smith" link="facebook.com"/>
             <WhoAmI name="Alex" surname="Stonks" link="vk.com"/>
         </Wrapper>
