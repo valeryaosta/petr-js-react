@@ -65,9 +65,40 @@ const DynamicGreeting = (props) => {
     )
 }
 
+const Message = (props) => {
+    return (
+        <h2>The counter is {props.counter}</h2>
+    )
+}
+
+class Counter extends React.Component {
+    state = {
+        counter: 0
+    }
+    changeCounter = () => {
+        this.setState(({counter}) => ({
+            counter: counter + 1
+        }))
+    }
+    render() {
+        return (
+            <>
+                <button className={'btn btn-primary'} onClick={this.changeCounter}>Click me</button>
+                {this.props.render(this.state.counter)}
+                // в рендер-пропсах передается функция, а не К-та + можно доп-но добавлять агрументы, кот берутся из Родит. К-та
+            </>
+        )
+    }
+}
+
 function App() {
     return (
         <Wrapper>
+
+            <Counter render={counter => (
+                <Message counter={counter}/>
+            )}/>
+
             <BootstrapTest
                 left = {
                     <DynamicGreeting color='primary'>
