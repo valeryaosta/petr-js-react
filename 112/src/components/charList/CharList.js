@@ -3,33 +3,27 @@ import './charList.scss';
 import MarvelService from "../../services/MarvelService";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import Spinner from "../spinner/Spinner";
+import useMarvelService from "../../services/MarvelService";
 
 // import PropTypes from 'prop-types';
 
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(false)
     const [newItemLoading, setNewItemLoading] = useState(false)
     const [offset, setOffset] = useState(210)
     const [charEnded, setCharEnded] = useState(false)
 
-    const marvelService = new MarvelService();
+    const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
-        onRequest()
+        onRequest(offset, true)
     }, [])
 
-    const onRequest = (offset) => {
-        onCharListLoading();
-        marvelService.getAllCharacters(offset)
+    const onRequest = (offset, initial) => {
+        initial ? setNewItemLoading(false) : setNewItemLoading(true)
+        getAllCharacters(offset)
             .then(onCharListLoaded)
-            .catch(onError);
-    }
-
-    const onCharListLoading = () => {
-        setNewItemLoading(true)
     }
 
     const onCharListLoaded = (newCharList) => {
@@ -39,15 +33,9 @@ const CharList = (props) => {
         }
 
         setCharList(charList => [...charList, ...newCharList])
-        setLoading(false)
         setNewItemLoading(false)
         setOffset(offset => offset + 9)
         setCharEnded(ended)
-    }
-
-    const onError = () => {
-        setError(true)
-        setLoading(false)
     }
 
     const itemRefs = useRef([]);
@@ -100,14 +88,13 @@ const CharList = (props) => {
     const items = renderItems(charList)
 
     const errorMessage = error ? <ErrorMessage/> : null
-    const spinner = loading ? <Spinner/> : null
-    const content = !(error || loading) ? items : null
+    const spinner = loading && !newItemLoading ? <Spinner/> : null
 
     return (
         <div className="char__list">
             {spinner}
-            {content}
             {errorMessage}
+            {items}
             <button className="button button__main button__long"
                     disabled={newItemLoading}
                     style={{display: charEnded ? 'none' : 'block'}}
