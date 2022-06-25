@@ -30,12 +30,16 @@ const HeroesList = () => {
 
     const filteredHeroes = useSelector(filteredHeroesSelector);
 
-    const heroesLoadingStatus = useSelector(state => state);
+    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
     useEffect(() => {
+        // благодаря энхенсеру в сторе. можем диспачить строку, а не как обычный обект экшен криейтор
+        // dispatch('HEROES_FETCHING');
+
         dispatch(heroesFetching());
+        dispatch('HEROES_FETCHING');
         request("http://localhost:3001/heroes")
             .then(data => dispatch(heroesFetched(data)))
             .catch(() => dispatch(heroesFetchingError()))
