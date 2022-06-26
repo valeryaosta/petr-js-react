@@ -1,5 +1,5 @@
 import {createStore, compose} from 'redux';
-import {combineReducers} from "@reduxjs/toolkit";
+import {applyMiddleware, combineReducers} from "@reduxjs/toolkit";
 import heroes from "../reducers/heroes";
 import filters from "../reducers/filters";
 
@@ -8,30 +8,23 @@ export const reducer = combineReducers({
     filters
 })
 
-const enhancer = (createStore) => (...args) => {
-    const store = createStore(...args);
-
-    // сохранили огир диспатч,кот принимал в себя только объект
-    const oldDispatch = store.dispatch;
-    // взяли этот ориг диспатч и перезаписали его, поместив новую ф-цию
-    store.dispatch = (action) => {
-        if (typeof action === 'string') {
-            return oldDispatch({
-                type: action
-            })
-        }
-        return oldDispatch(action)
+// next - dispatch, вместо next будет вызываться след ф-ция мз миддлевара
+const stringMiddleware = (store) => (next) => (action) => {
+    if (typeof action === 'string') {
+        return next({
+            type: action
+        })
     }
-    // после подмены диспатча нужно обязательно вернуть стор
-    return store;
+    return next(action)
 }
 
 const store = createStore(
     reducer,
     compose(
-        enhancer,
+        applyMiddleware(stringMiddleware),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    ));
+    )
+);
 
 export default store;
 
