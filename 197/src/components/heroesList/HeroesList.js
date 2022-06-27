@@ -2,12 +2,13 @@ import {useHttp} from '../../hooks/http.hook';
 import {useEffect, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {createSelector} from 'reselect'
+import './heroesList.scss';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
-import {heroDeleted, fetchHeroes} from '../../actions';
+import {fetchHeroes} from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
-import './heroesList.scss';
+import {heroDeleted} from "./heroesSlice";
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
